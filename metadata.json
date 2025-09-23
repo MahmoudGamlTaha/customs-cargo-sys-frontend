@@ -1,0 +1,6 @@
+{
+  "name": "LCDH-005",
+  "description": "A complete, interactive, and realistic prototype of a Firebase-based application for the Union of Libyan Chambers of Commerce. It features Firestore-based data management for users, memberships, certificates, payments, events, disputes, and wallets. The application includes role-based access for members, staff, arbitrators, and admins, with simulated backend logic for payments, transfers, and approvals.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Libyan Customs Authority | مصلحة الجمارك الليبية</title>
+    <link rel="icon" type="image/x-icon" href="src/favicon.ico" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="src/styles/colors.css" />
+    <script>
+      tailwind.config = {
+        darkMode: "class", // Enable dark mode
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Cairo", "Roboto", "sans-serif"],
+            },
+            colors: {
+              "brand-primary": "var(--brand-primary, #EA580C)",
+              "brand-primary-hover": "var(--brand-primary-hover, #C2410C)",
+              "brand-primary-light": "var(--brand-primary-light, #FB923C)",
+              "brand-secondary": "var(--brand-secondary, #007A3D)",
+              "brand-accent": "var(--brand-accent, #D4AF37)",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      * {
+        /* font-family: "Cairo", sans-serif; */
+      }
+      body {
+        font-family: "Cairo", sans-serif;
+      }
+      html[lang="en"] body {
+        font-family: "Roboto", sans-serif;
+      }
+      html[lang="en"] * {
+        font-family: "Roboto", sans-serif !important;
+      }
+      html[dir="rtl"] .group:hover .group-hover\:rtl\:block {
+        display: block;
+      }
+      html[dir="ltr"] .group:hover .group-hover\:ltr\:block {
+        display: block;
+      }
+      .responsive-iframe-container {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        padding-top: 56.25%; /* 16:9 Aspect Ratio */
+      }
+      .responsive-iframe-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-in-out forwards;
+      }
+
+      @keyframes moveCursor {
+        0% {
+          top: 20%;
+          left: 30%;
+        }
+        25% {
+          top: 60%;
+          left: 50%;
+        }
+        50% {
+          top: 55%;
+          left: 55%;
+          opacity: 1;
+          transform: scale(1);
+        }
+        55% {
+          top: 55%;
+          left: 55%;
+          opacity: 1;
+          transform: scale(0.9);
+        } /* Simulates a click */
+        60% {
+          top: 55%;
+          left: 55%;
+          opacity: 1;
+          transform: scale(1);
+        }
+        75% {
+          top: 30%;
+          left: 70%;
+        }
+        100% {
+          top: 20%;
+          left: 30%;
+        }
+      }
+      .animated-cursor {
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white' stroke='black' stroke-width='1.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z' /%3E%3C/svg%3E");
+        transform: rotate(-15deg);
+        animation: moveCursor 6s ease-in-out infinite;
+        z-index: 10;
+        pointer-events: none;
+      }
+      .dark .animated-cursor {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black' stroke='white' stroke-width='1.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z' /%3E%3C/svg%3E");
+      }
+      .print-container {
+        font-family: "Times New Roman", Times, serif !important;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/genai": "https://esm.sh/@google/genai@^1.12.0",
+          "react": "https://esm.sh/react@^19.1.1",
+          "react/jsx-runtime": "https://esm.sh/react@^19.1.1/jsx-runtime",
+          "react-router-dom": "https://esm.sh/react-router-dom@^7.7.1",
+          "react-dom/client": "https://esm.sh/react-dom@^19.1.1/client",
+          "recharts": "https://esm.sh/recharts@^3.1.0",
+          "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
+          "react/": "https://esm.sh/react@^19.1.1/"
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="/index.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

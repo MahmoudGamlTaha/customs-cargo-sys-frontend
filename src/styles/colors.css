@@ -1,0 +1,76 @@
+/* 
+ * ملف إدارة ألوان التطبيق
+ * يمكن تغيير الألوان هنا بسهولة
+ */
+
+:root {
+  /* الألوان الأساسية */
+  --brand-primary: #EA580C;     /* برتقالي داكن - اللون الأساسي الجديد */
+  --brand-primary-hover: #C2410C; /* برتقالي داكن للـ hover */
+  --brand-primary-light: #FB923C; /* برتقالي فاتح */
+  --brand-secondary: #007A3D;   /* أخضر متوسط */
+  --brand-accent: #D4AF37;      /* ذهبي */
+  
+  /* ألوان إضافية للرسوم البيانية */
+  --chart-color-1: var(--brand-primary);
+  --chart-color-2: var(--brand-secondary);
+  --chart-color-3: var(--brand-accent);
+  --chart-color-4: #DC2626;     /* أحمر */
+  
+  /* ألوان بديلة مقترحة (يمكن استخدامها لاحقاً) */
+  --alt-primary-purple: #6B46C1;    /* بنفسجي داكن */
+  --alt-primary-red: #B91C1C;       /* أحمر داكن */
+  --alt-primary-orange: #EA580C;    /* برتقالي داكن */
+  --alt-primary-gray: #374151;      /* رمادي داكن */
+  --alt-primary-blue: #1E40AF;      /* أزرق داكن مختلف */
+}
+
+/* 
+ * لاستخدام لون بديل، قم بتغيير --brand-primary إلى:
+ * --brand-primary: var(--alt-primary-purple);
+ * --brand-primary: var(--alt-primary-red);
+ * --brand-primary: var(--alt-primary-orange);
+ * --brand-primary: var(--alt-primary-gray);
+ * --brand-primary: var(--alt-primary-blue);
+ */
+
+/* قواعد CSS للـ Hover والأزرار */
+.bg-brand-primary:hover {
+  background-color: var(--brand-primary-hover) !important;
+}
+
+.text-brand-primary:hover {
+  color: var(--brand-primary-hover) !important;
+}
+
+.border-brand-primary:hover {
+  border-color: var(--brand-primary-hover) !important;
+}
+
+/* تحديث ألوان الأزرار في Tailwind */
+.btn-primary {
+  background-color: var(--brand-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--brand-primary-hover);
+}
+
+/* تحديث ألوان الروابط */
+.link-primary {
+  color: var(--brand-primary);
+}
+
+.link-primary:hover {
+  color: var(--brand-primary-hover);
+}
+
+/* تحديث ألوان الحدود */
+.border-primary {
+  border-color: var(--brand-primary);
+}
+
+.border-primary:hover {
+  border-color: var(--brand-primary-hover);
+}
