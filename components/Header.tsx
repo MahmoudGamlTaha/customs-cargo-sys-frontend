@@ -4,7 +4,6 @@ import { useTheme } from "../contexts/ThemeContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import { MemberProfile } from "@/types";
 import { getCurrentUser } from "@/services/authService";
-import { GetAllRoles, Role } from "@/services/userService";
 import { dataProcessor } from "@/utils/DataProcessor";
 
 interface HeaderProps {
@@ -19,7 +18,6 @@ const Header: React.FC<HeaderProps> = ({
   onMenuClick,
   userName,
 }) => {
-  const [roles, setRoles] = useState<Role[]>([]);
   const { theme, toggleTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
@@ -57,32 +55,19 @@ const Header: React.FC<HeaderProps> = ({
     const processedRoleCode =
       dataProcessor.convertBranchAdminToPortManager(roleCode);
 
-    if (language === "ar") {
-      return (
-        (roles || [])?.find((res) => res?.code === processedRoleCode)
-          ?.name_ar || processedRoleCode
-      );
-    } else {
-      return (
-        (roles || [])?.find((res) => res?.code === processedRoleCode)
-          ?.name_en || processedRoleCode
-      );
+    // Use translation system instead of API data
+    let roleKey = processedRoleCode?.toLowerCase().replace(/_/g, '');
+    
+    // Handle specific role mappings
+    if (roleKey === 'portmanager') {
+      roleKey = 'portManager';
+    } else if (roleKey === 'branchadmin') {
+      roleKey = 'branchAdmin';
     }
-  }, [roles, getCurrentUser]);
+    
+    return t(`roles.${roleKey}`, { defaultValue: processedRoleCode });
+  }, [getCurrentUser, t]);
 
-  useEffect(() => {
-    const fetchRoles = async () => {
-      try {
-        const result = await GetAllRoles();
-        if (result.success) {
-          setRoles(result.data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching roles:", error);
-      }
-    };
-    fetchRoles();
-  }, []);
 
   console.log(getRoleName, "getRoleName");
 
