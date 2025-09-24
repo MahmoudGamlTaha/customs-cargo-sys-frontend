@@ -29,12 +29,12 @@ const BranchInquiriesPage: React.FC = () => {
   }, []);
 
   const filteredInquiries = inquiries.filter((inquiry) => {
-    // For branch_admin: show only data from their branch (Tripoli)
     // For admin: show all data with filter option
+    // For branch_admin and port_manager: show only data from their branch
     const branchMatch =
       user?.role === UserRole.Admin
         ? filterBranch === "all" || inquiry.branch === filterBranch
-        : inquiry.branch === "منفذ طرابلس البحري"; // Fixed branch for branch_admin
+        : inquiry.branch === "منفذ طرابلس البحري"; // Fixed branch for branch_admin and port_manager
 
     // Search by employee name or ID
     const searchMatch =
@@ -174,7 +174,7 @@ const BranchInquiriesPage: React.FC = () => {
         <p className="text-gray-600 dark:text-gray-400">
           {t("inquiries.subtitle")}
         </p>
-        {user?.role === UserRole.BranchAdmin && (
+        {(user?.role === UserRole.BranchAdmin || user?.role === UserRole.PortManager) && (
           <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">
             {t("inquiries.branchAdminNote")}
           </p>

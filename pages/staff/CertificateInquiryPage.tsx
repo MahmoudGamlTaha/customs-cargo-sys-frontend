@@ -239,7 +239,7 @@ const CertificateInquiryPage: React.FC = () => {
                         {t('certificateInquiry.found')}
                       </h3>
                       <p className="text-gray-600 dark:text-gray-400">
-                        {t('certificateInquiry.certificateNumber')}: <strong>{result.certificateNumber}</strong>
+                        {t('certificateInquiry.certificateNumber')}: <strong style={{ direction: "ltr", unicodeBidi: "bidi-override" }}>{result.certificateNumber}</strong>
                       </p>
                     </div>
 
@@ -254,18 +254,15 @@ const CertificateInquiryPage: React.FC = () => {
                               {t('certificateInquiry.issueDate')}:
                             </span>
                             <span className="ml-2 text-gray-800 dark:text-gray-200">
-                              {new Date(result.certificateData.created_at).toLocaleDateString('ar-SA')}
+                              {result.certificateData.issue_date}
                             </span>
                           </div>
                           <div>
                             <span className="font-medium text-gray-600 dark:text-gray-400">
-                              {t('certificateInquiry.approvalDate')}:
+                              {t('certificateInquiry.expiryDate')}:
                             </span>
                             <span className="ml-2 text-gray-800 dark:text-gray-200">
-                              {result.certificateData.approved_at ? 
-                                new Date(result.certificateData.approved_at).toLocaleDateString('ar-SA') : 
-                                t('certificateInquiry.notApproved')
-                              }
+                              {result.certificateData.expiry_date}
                             </span>
                           </div>
                           <div>
@@ -273,15 +270,15 @@ const CertificateInquiryPage: React.FC = () => {
                               {t('certificateInquiry.status')}:
                             </span>
                             <span className="ml-2 text-green-600 dark:text-green-400 font-medium">
-                              {result.certificateData.status === 'PAID' ? t('certificateInquiry.paid') : result.certificateData.status}
+                              {t('certificateInquiry.valid')}
                             </span>
                           </div>
                           <div>
                             <span className="font-medium text-gray-600 dark:text-gray-400">
-                              {t('certificateInquiry.serialNumber')}:
+                              {t('certificateInquiry.type')}:
                             </span>
                             <span className="ml-2 text-gray-800 dark:text-gray-200">
-                              {result.certificateData.serial_number}
+                              {result.certificateData.request_type_id === 1 ? 'COMESA' : 'Free Trade'}
                             </span>
                           </div>
                         </div>

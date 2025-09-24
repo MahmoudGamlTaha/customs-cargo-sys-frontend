@@ -118,6 +118,42 @@ const auditorLinks: NavItemType[] = [
   { to: "/profile", labelKey: "sidebar.profile", icon: <ProfileIcon /> },
   // { to: '/user-guide', labelKey: 'sidebar.userGuide', icon: <PlayCircleIcon /> }, // Hidden
 ];
+
+const branchManagerLinks: NavItemType[] = [
+  { to: "/dashboard", labelKey: "sidebar.dashboard", icon: <DashboardIcon /> },
+  { to: "staff_header", labelKey: "sidebar.managementAndOperations" },
+  {
+    to: "/staff/documents",
+    labelKey: "sidebar.documentRequests",
+    icon: <DocumentIcon />,
+  },
+  {
+    to: "/branch/inquiries",
+    labelKey: "sidebar.inquiryLog",
+    icon: <DocumentIcon />,
+  },
+  { to: "profile_header", labelKey: "sidebar.account" },
+  { to: "/profile", labelKey: "sidebar.profile", icon: <ProfileIcon /> },
+  // { to: '/user-guide', labelKey: 'sidebar.userGuide', icon: <PlayCircleIcon /> }, // Hidden
+];
+
+const portManagerLinks: NavItemType[] = [
+  { to: "/dashboard", labelKey: "sidebar.dashboard", icon: <DashboardIcon /> },
+  { to: "staff_header", labelKey: "sidebar.managementAndOperations" },
+  {
+    to: "/staff/documents",
+    labelKey: "sidebar.documentRequests",
+    icon: <DocumentIcon />,
+  },
+  {
+    to: "/branch/inquiries",
+    labelKey: "sidebar.inquiryLog",
+    icon: <DocumentIcon />,
+  },
+  { to: "profile_header", labelKey: "sidebar.account" },
+  { to: "/profile", labelKey: "sidebar.profile", icon: <ProfileIcon /> },
+  // { to: '/user-guide', labelKey: 'sidebar.userGuide', icon: <PlayCircleIcon /> }, // Hidden
+];
 4;
 const adminLinks: NavItemType[] = [
   { to: "/dashboard", labelKey: "sidebar.dashboard", icon: <DashboardIcon /> },
@@ -217,8 +253,12 @@ const Sidebar: React.FC<SidebarProps> = ({
         return link;
       })
       .filter((link): link is NavItemType => link !== null);
-  } else if (userRole === UserRole.Staff || userRole === UserRole.BranchAdmin) {
+  } else if (userRole === UserRole.Staff) {
     links = staffLinks;
+  } else if (userRole === UserRole.BranchAdmin) {
+    links = branchManagerLinks;
+  } else if (userRole === UserRole.PortManager) {
+    links = portManagerLinks;
   } else if (userRole === UserRole.Accountant) {
     links = accountantLinks;
   } else if (userRole === UserRole.Auditor) {

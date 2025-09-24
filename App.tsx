@@ -1340,8 +1340,10 @@ const AppContent: React.FC = () => {
                         />
                       )}
                       
-                      {/* Admin Inquiries - Only for Admin */}
-                      {currentUser.role === UserRole.Admin && (
+                      {/* Admin Inquiries - For Admin, Branch Manager, and Port Manager */}
+                      {(currentUser.role === UserRole.Admin || 
+                        currentUser.role === UserRole.BranchAdmin || 
+                        currentUser.role === UserRole.PortManager) && (
                         <Route
                           path="/admin/inquiries"
                           element={<BranchInquiriesPage />}
