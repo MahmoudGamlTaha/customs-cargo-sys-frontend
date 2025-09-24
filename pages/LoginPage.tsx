@@ -251,13 +251,13 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSignup, chambers }) =>
               {loading ? t('login.sending') : t('login.loginButton')}
             </button>
             
-            <button 
+            {/* <button 
               type="button" 
               onClick={() => navigate('/public/certificate/')}
               className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline w-full transition-colors duration-200"
             >
               {t('login.certificateValidation')}
-            </button>
+            </button> */}
           </div>
           {/* <div className="text-center">
               <button type="button" onClick={handleForgotPassword} className="inline-block align-baseline font-bold text-sm text-brand-primary hover:text-brand-primary-hover disabled:text-gray-500" disabled={!!forgotPasswordStatus}>
