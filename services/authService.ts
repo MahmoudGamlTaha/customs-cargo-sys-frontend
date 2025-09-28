@@ -1,6 +1,5 @@
 import { getToken } from '@/utils/getToken';
 import { User, UserRole, Branch } from '../types';
-import { dataProcessor, LoginResponse } from '@/utils/DataProcessor';
 
 const DEFAULT_BASE_URL = 'http://localhost:8080/api/v1/auth';
 const BASE_URL: string = (import.meta as any)?.env?.VITE_API_BASE_URL
@@ -121,13 +120,13 @@ export async function login(email: string, password: string): Promise<LoginResul
   
   // Process the login data using DataProcessor
   console.log("Processing login data...");
-  const processedJson = dataProcessor.processLogin(json as LoginResponse);
-  console.log("Processed login data:", processedJson);
+  // const json = dataProcessor.processLogin(json as LoginResponse);
+  console.log("Processed login data:", json);
   
   const token: string | undefined =
-    processedJson?.data?.token ?? processedJson?.token ?? processedJson?.accessToken ?? processedJson?.jwt;
-  // console.log(processedJson?.data, "processedJson?.data")
-  const apiUser = processedJson?.data?.user ?? processedJson?.user ?? processedJson?.data ?? processedJson; // supports { data: { user } }
+    json?.data?.token ?? json?.token ?? json?.accessToken ?? json?.jwt;
+  // console.log(json?.data, "json?.data")
+  const apiUser = json?.data?.user ?? json?.user ?? json?.data ?? json; // supports { data: { user } }
   const user = mapApiUserToUser(apiUser);
   user.accessToken = token || user.accessToken || '';
   
@@ -143,94 +142,94 @@ export async function login(email: string, password: string): Promise<LoginResul
  * Test the DataProcessor with sample login data
  * @returns Test result
  */
-export function testLoginProcessor() {
-  console.log('Testing Login DataProcessor...');
+// export function testLoginProcessor() {
+//   console.log('Testing Login DataProcessor...');
   
-  // Test with sample data
-  const sampleLoginResponse = {
-    success: true,
-    message: "Login successful",
-    data: {
-      user: {
-        id: 1,
-        username: "admin",
-        email: "admin@gucc.com",
-        first_name: "System",
-        last_name: "Administrator",
-        phone: "110215454554",
-        is_active: true,
-        email_verified: true,
-        is_password_reset_required: false,
-        created_at: "2025-08-10T17:26:44.658295Z",
-        last_login: null,
-        branch_id: 33,
-        branch: {
-          id: 33,
-          created_at: "2025-09-17T12:34:53.957208Z",
-          updated_at: "2025-09-17T12:34:53.957208Z",
-          name: "غرفة التجارة والصناعة والزراعة - هلال العاصمة",
-          code: "003",
-          address: "طرابلس جنزور",
-          phone: "00218913434444",
-          email: "info@gucc.ly"
-        },
-        role_name: "admin",
-        role: "admin",
-        role_id: 4
-      },
-      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-    },
-    timestamp: "2025-09-23T20:17:28.8518843Z"
-  };
+//   // Test with sample data
+//   const sampleLoginResponse = {
+//     success: true,
+//     message: "Login successful",
+//     data: {
+//       user: {
+//         id: 1,
+//         username: "admin",
+//         email: "admin@gucc.com",
+//         first_name: "System",
+//         last_name: "Administrator",
+//         phone: "110215454554",
+//         is_active: true,
+//         email_verified: true,
+//         is_password_reset_required: false,
+//         created_at: "2025-08-10T17:26:44.658295Z",
+//         last_login: null,
+//         branch_id: 33,
+//         branch: {
+//           id: 33,
+//           created_at: "2025-09-17T12:34:53.957208Z",
+//           updated_at: "2025-09-17T12:34:53.957208Z",
+//           name: "غرفة التجارة والصناعة والزراعة - هلال العاصمة",
+//           code: "003",
+//           address: "طرابلس جنزور",
+//           phone: "00218913434444",
+//           email: "info@gucc.ly"
+//         },
+//         role_name: "admin",
+//         role: "admin",
+//         role_id: 4
+//       },
+//       token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+//     },
+//     timestamp: "2025-09-23T20:17:28.8518843Z"
+//   };
   
-  const result = dataProcessor.processLogin(sampleLoginResponse);
-  console.log('Test result:', result);
-  return result;
-}
+//   const result = dataProcessor.processLogin(sampleLoginResponse);
+//   console.log('Test result:', result);
+//   return result;
+// }
 
 /**
  * Test the convertBranchAdminToPortManager method
  * @returns Test result
  */
-export function testRoleConversion() {
-  console.log('Testing Role Conversion...');
+// export function testRoleConversion() {
+//   console.log('Testing Role Conversion...');
   
-  // Test cases
-  const testCases = [
-    "branch_admin",
-    "admin", 
-    "staff",
-    "port_manager",
-    "user"
-  ];
+//   // Test cases
+//   const testCases = [
+//     "branch_admin",
+//     "admin", 
+//     "staff",
+//     "port_manager",
+//     "user"
+//   ];
   
-  testCases.forEach(role => {
-    const converted = dataProcessor.convertBranchAdminToPortManager(role);
-    console.log(`${role} -> ${converted}`);
-  });
+//   testCases.forEach(role => {
+//     const converted = dataProcessor.convertBranchAdminToPortManager(role);
+//     console.log(`${role} -> ${converted}`);
+//   });
   
-  return testCases.map(role => ({
-    original: role,
-    converted: dataProcessor.convertBranchAdminToPortManager(role)
-  }));
-}
+//   return testCases.map(role => ({
+//     original: role,
+//     converted: dataProcessor.convertBranchAdminToPortManager(role)
+//   }));
+// }
 
 /**
  * Test the getFilteredUsersCount method
  * @returns Test result
  */
-export async function testFilteredUsersCount() {
-  console.log('Testing Filtered Users Count...');
+// export async function testFilteredUsersCount() {
+//   console.log('Testing Filtered Users Count...');
   
-  try {
-    const count = await dataProcessor.getFilteredUsersCount();
-    console.log('Filtered users count:', count);
-    return count;
-  } catch (error) {
-    console.error('Error testing filtered users count:', error);
-    return 0;
-  }
-}
+//   try {
+//     const count = await dataProcessor.getFilteredUsersCount();
+//     console.log('Filtered users count:', count);
+//     return count;
+//   } catch (error) {
+//     console.error('Error testing filtered users count:', error);
+//     return 0;
+//   }
+// }
 
 export async function register(
   fullName: string,

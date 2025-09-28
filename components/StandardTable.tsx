@@ -25,7 +25,7 @@ export interface TableAction<T = any> {
   disabled?: (item: T) => boolean;
   loading?: (item: T) => boolean;
   loadingText?: string;
-  loadingTextTranslationKey?: string;
+  loadingTextTranslationKey?: string;  
 }
 
 export interface StandardTableProps<T = any> {
@@ -69,7 +69,7 @@ export const StandardTable = <T extends Record<string, any>>({
   emptyText = "لا توجد بيانات",
   emptyTextTranslationKey = "common.noData",
   className = "",
-  tableClassName = "w-full bg-white",
+  tableClassName = "w-full",
   headerClassName = "",
   rowClassName = "border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700",
   onRowClick,
@@ -237,7 +237,7 @@ export const StandardTable = <T extends Record<string, any>>({
             : typeof action.className === 'function' 
               ? action.className(item)
               : action.className ||
-                "bg-blue-50 text-blue-600 hover:bg-blue-100 hover:shadow-sm border-2 border-blue-500 hover:border-blue-600"
+                "bg-brand-lighter/20 text-brand-primary hover:bg-brand-primary/20 hover:shadow-sm border-2 border-brand-primary hover:border-brand-primary-dark"
         }`}
       >
         {isLoading ? (
@@ -275,10 +275,10 @@ export const StandardTable = <T extends Record<string, any>>({
   };
 
   return (
-    <div className={`touch-pan-x ${tableWrapperClassName} ${className}`}>
+    <div className={`${tableWrapperClassName} ${className} w-full overflow-y-auto touch-pan-x`}>
       <table className={tableClassName}>
         <thead>
-          <tr className={`border-b dark:border-gray-700 bg-gray-100 dark:bg-gray-600 ${headerClassName}`}>
+          <tr className={`${headerClassName} border-b dark:border-gray-700 bg-gray-100 dark:bg-gray-600`}>
             {showRowNumbers && (
               <th className="py-3 px-4 w-12">
                 {getTranslation(rowNumberHeaderTranslationKey, rowNumberHeader)}
@@ -302,7 +302,7 @@ export const StandardTable = <T extends Record<string, any>>({
             )}
           </tr>
         </thead>
-        <tbody className="bg-white">
+        <tbody>
           {loading ? (
             <tr>
               <td
@@ -342,7 +342,7 @@ export const StandardTable = <T extends Record<string, any>>({
             data?.map((item, index) => (
               <tr
                 key={item.id || index}
-                className={`bg-white border-b-[1px] border-solid border-gray-200 ${getRowClassName(item, index)}`}
+                className={`${getRowClassName(item, index)} hover:bg-gray-100/50 cursor-pointer border-b-[1px] border-solid border-gray-200/50 dark:border-gray-500/50 `}
                 onClick={() => handleRowClick(item)}
               >
                 {showRowNumbers && (
