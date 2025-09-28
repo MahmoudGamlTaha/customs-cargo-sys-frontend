@@ -46,7 +46,9 @@ const BranchInquiriesPage: React.FC = () => {
     // Search by employee name or ID
     const searchMatch =
       searchTerm === "" ||
-      inquiry.employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      inquiry?.employeeName
+        ?.toLowerCase()
+        ?.includes(searchTerm?.toLowerCase()) ||
       inquiry.employeeId.toLowerCase().includes(searchTerm.toLowerCase());
 
     return branchMatch && searchMatch;
@@ -116,16 +118,16 @@ const BranchInquiriesPage: React.FC = () => {
       ),
       className: "text-center",
     },
-    {
-      key: "employeeName",
-      header: t("inquiries.table.employeeName"),
-      render: (inquiry) => (
-        <span className="font-medium text-gray-900 dark:text-gray-100">
-          {inquiry.user_id}
-        </span>
-      ),
-      className: "text-center",
-    },
+    // {
+    //   key: "employeeName",
+    //   header: t("inquiries.table.employeeName"),
+    //   render: (inquiry) => (
+    //     <span className="font-medium text-gray-900 dark:text-gray-100">
+    //       {inquiry.user_id}
+    //     </span>
+    //   ),
+    //   className: "text-center",
+    // },
     // {
     //   key: "branch",
     //   header: t("inquiries.table.branch"),
@@ -141,19 +143,19 @@ const BranchInquiriesPage: React.FC = () => {
       header: t("inquiries.table.question"),
       render: (inquiry) => (
         <div className="max-w-xs">
-          <p className="text-sm text-gray-800 dark:text-gray-200 truncate">
+          <p className="text-sm text-center text-gray-800 dark:text-gray-200 truncate">
             {inquiry.description}
           </p>
         </div>
       ),
       className: "text-center",
     },
-    {
-      key: "module",
-      header: t("inquiries.table.status"),
-      render: (inquiry) => getStatusBadge(inquiry.module),
-      className: "text-center",
-    },
+    // {
+    //   key: "module",
+    //   header: t("inquiries.table.status"),
+    //   render: (inquiry) => getStatusBadge(inquiry.module),
+    //   className: "text-center",
+    // },
     // {
     //   key: "certificateDetails",
     //   header: t("inquiries.table.certificateDetails"),

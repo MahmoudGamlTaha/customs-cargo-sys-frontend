@@ -1,4 +1,4 @@
-import { getToken } from '../utils/getToken';
+import { getToken } from "../utils/getToken";
 
 export interface Activity {
   id: number;
@@ -22,25 +22,31 @@ export const getAdminActivities = async (
   pageSize: number = 3
 ): Promise<ActivitiesResponse> => {
   const token = getToken();
-  
+
   if (!token) {
-    throw new Error('No authentication token found');
+    throw new Error("No authentication token found");
   }
 
+  const DEFAULT_BASE_URL = "http://localhost:8080/api/v1";
+  const BASE_URL: string = (import.meta as any)?.env?.VITE_API_BASE_URL
+    ? `${(import.meta as any).env.VITE_API_BASE_URL.replace(/\/$/, "")}/api/v1`
+    : DEFAULT_BASE_URL;
+
   const response = await fetch(
-    `http://51.20.121.17:8080/api/v1/activities?page=${page}&page_size=${pageSize}`,
+    `${BASE_URL}/activities?page=${page}&page_size=${100}`,
     {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Accept': 'application/json',
-        'Accept-Language': 'ar-EG,ar;q=0.9,en-US;q=0.8,en;q=0.7',
-        'Authorization': `Bearer ${token}`,
-        'Connection': 'keep-alive',
-        'Content-Type': 'application/json',
-        'Origin': 'http://localhost:5173',
-        'Referer': 'http://localhost:5173/',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36'
-      }
+        Accept: "application/json",
+        "Accept-Language": "ar-EG,ar;q=0.9,en-US;q=0.8,en;q=0.7",
+        Authorization: `Bearer ${token}`,
+        Connection: "keep-alive",
+        "Content-Type": "application/json",
+        Origin: "http://localhost:5173",
+        Referer: "http://localhost:5173/",
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+      },
     }
   );
 
@@ -49,7 +55,7 @@ export const getAdminActivities = async (
   }
 
   const data: ActivitiesResponse = await response.json();
-  console.log('Admin Activities Response:', data);
-  
+  console.log("Admin Activities Response:", data);
+
   return data;
 };
