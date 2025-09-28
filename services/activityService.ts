@@ -33,7 +33,7 @@ export const getAdminActivities = async (
     : DEFAULT_BASE_URL;
 
   const response = await fetch(
-    `${BASE_URL}/activities?page=${page}&page_size=${100}`,
+    `${BASE_URL}/activities?page=${page}&page_size=${pageSize}`,
     {
       method: "GET",
       headers: {

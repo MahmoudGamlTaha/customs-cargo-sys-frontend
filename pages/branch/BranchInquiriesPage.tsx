@@ -6,12 +6,11 @@ import StandardTable, { TableColumn } from "../../components/StandardTable";
 import Card from "../../components/Card";
 import CustomSelect from "../../components/CustomSelect";
 import { dummyInquiries, Inquiry } from "../../data/dummyInquiries";
-import { Activity, getAdminActivities } from "@/services/activityService";
 
 const BranchInquiriesPage: React.FC = () => {
   const { t } = useLanguage();
   const { user } = useAuth();
-  const [inquiries, setInquiries] = useState<Activity[]>([]);
+  const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterBranch, setFilterBranch] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -20,35 +19,27 @@ const BranchInquiriesPage: React.FC = () => {
     // Simulate API call
     const fetchInquiries = async () => {
       setLoading(true);
-      const result = await getAdminActivities();
-      if(result.data){
-        const dataTemp: Activity[] = result?.data?.filter((res) => res.action === 'get')
-        console.log(result.data, "SSSS");
-        setInquiries(dataTemp);
-      }
       // Simulate delay
-      // await new Promise((resolve) => setTimeout(resolve, 1000));
-      // setInquiries(dummyInquiries);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setInquiries(dummyInquiries);
       setLoading(false);
     };
 
     fetchInquiries();
   }, []);
 
-  const filteredInquiries = inquiries?.filter((inquiry) => {
+  const filteredInquiries = inquiries.filter((inquiry) => {
     // For branch_admin: show only data from their branch (Tripoli)
     // For admin: show all data with filter option
     const branchMatch =
       user?.role === UserRole.Admin
-        ? filterBranch === "all" || inquiry?.branch === filterBranch
+        ? filterBranch === "all" || inquiry.branch === filterBranch
         : inquiry.branch === "منفذ طرابلس البحري"; // Fixed branch for branch_admin
 
     // Search by employee name or ID
     const searchMatch =
       searchTerm === "" ||
-      inquiry?.employeeName
-        ?.toLowerCase()
-        ?.includes(searchTerm?.toLowerCase()) ||
+      inquiry.employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       inquiry.employeeId.toLowerCase().includes(searchTerm.toLowerCase());
 
     return branchMatch && searchMatch;
@@ -101,7 +92,7 @@ const BranchInquiriesPage: React.FC = () => {
     );
   };
 
-  const columns: TableColumn<Activity>[] = [
+  const columns: TableColumn<Inquiry>[] = [
     {
       key: "id",
       header: t("inquiries.table.numbering"),
@@ -113,55 +104,55 @@ const BranchInquiriesPage: React.FC = () => {
       header: t("inquiries.table.employeeId"),
       render: (inquiry) => (
         <span className="font-mono text-sm bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
-          {inquiry.user_id}
+          {inquiry.employeeId}
         </span>
       ),
       className: "text-center",
     },
-    // {
-    //   key: "employeeName",
-    //   header: t("inquiries.table.employeeName"),
-    //   render: (inquiry) => (
-    //     <span className="font-medium text-gray-900 dark:text-gray-100">
-    //       {inquiry.user_id}
-    //     </span>
-    //   ),
-    //   className: "text-center",
-    // },
-    // {
-    //   key: "branch",
-    //   header: t("inquiries.table.branch"),
-    //   render: (inquiry) => (
-    //     <span className="text-gray-700 dark:text-gray-300">
-    //       {inquiry.}
-    //     </span>
-    //   ),
-    //   className: "text-center",
-    // },
     {
-      key: "description",
+      key: "employeeName",
+      header: t("inquiries.table.employeeName"),
+      render: (inquiry) => (
+        <span className="font-medium text-gray-900 dark:text-gray-100">
+          {inquiry.employeeName}
+        </span>
+      ),
+      className: "text-center",
+    },
+    {
+      key: "branch",
+      header: t("inquiries.table.branch"),
+      render: (inquiry) => (
+        <span className="text-gray-700 dark:text-gray-300">
+          {inquiry.branch}
+        </span>
+      ),
+      className: "text-center",
+    },
+    {
+      key: "question",
       header: t("inquiries.table.question"),
       render: (inquiry) => (
         <div className="max-w-xs">
-          <p className="text-sm text-center text-gray-800 dark:text-gray-200 truncate">
-            {inquiry.description}
+          <p className="text-sm text-gray-800 dark:text-gray-200 truncate">
+            {inquiry.question}
           </p>
         </div>
       ),
       className: "text-center",
     },
-    // {
-    //   key: "module",
-    //   header: t("inquiries.table.status"),
-    //   render: (inquiry) => getStatusBadge(inquiry.module),
-    //   className: "text-center",
-    // },
-    // {
-    //   key: "certificateDetails",
-    //   header: t("inquiries.table.certificateDetails"),
-    //   render: (inquiry) => getCertificateDetails(inquiry),
-    //   className: "text-center",
-    // },
+    {
+      key: "status",
+      header: t("inquiries.table.status"),
+      render: (inquiry) => getStatusBadge(inquiry.status),
+      className: "text-center",
+    },
+    {
+      key: "certificateDetails",
+      header: t("inquiries.table.certificateDetails"),
+      render: (inquiry) => getCertificateDetails(inquiry),
+      className: "text-center",
+    },
   ];
 
   const branchOptions = [

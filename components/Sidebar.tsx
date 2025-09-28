@@ -88,6 +88,11 @@ const staffLinks: NavItemType[] = [
     labelKey: "sidebar.documentRequests",
     icon: <DocumentIcon />,
   },
+  {
+    to: "/branch/inquiries",
+    labelKey: "sidebar.inquiryLog",
+    icon: <DocumentIcon />,
+  },
   { to: "profile_header", labelKey: "sidebar.account" },
   { to: "/profile", labelKey: "sidebar.profile", icon: <ProfileIcon /> },
   // { to: '/user-guide', labelKey: 'sidebar.userGuide', icon: <PlayCircleIcon /> }, // Hidden
