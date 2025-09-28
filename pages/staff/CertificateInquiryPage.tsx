@@ -97,19 +97,26 @@ const CertificateInquiryPage: React.FC = () => {
       return;
     }
 
+    const fixedUrl = `${(import.meta as any).env.VITE_API_CHAMBERS}`;
     // Determine the certificate type based on request_type_id
     const requestTypeId = result.certificateData.request_type_id;
 
     if (requestTypeId === 1) {
       // COMESA Certificate
-      navigate(
-        `/public/certificate/comisa/${result.certificateData.qr_identifier}`
+
+      window.open(
+        `${fixedUrl}#/public/certificate/comisa/${result.certificateData.qr_identifier}`,
+        "_blank"
       );
     } else if (requestTypeId === 2) {
       // Free Trade Certificate
-      navigate(
-        `/public/certificate/free-trade/${result.certificateData.qr_identifier}`
+      window.open(
+        `${fixedUrl}#/public/certificate/free-trade/${result.certificateData.qr_identifier}`,
+        "_blank"
       );
+      // navigate(
+      //   `${fixedUrl}#/public/certificate/free-trade/${result.certificateData.qr_identifier}`
+      // );
     } else {
       // Unknown type - show error
       alert(t("certificateValidation.featureNotImplemented"));
