@@ -1,3 +1,5 @@
+import { getToken } from "@/utils/getToken";
+
 const DEFAULT_BASE_URL = `http://localhost:8080/api/v1/requests`;
 const BASE_URL: string = (import.meta as any)?.env?.VITE_API_BASE_URL
   ? `${(import.meta as any).env.VITE_API_BASE_URL.replace(/\/$/, '')}/api/v1/request`
@@ -120,11 +122,13 @@ export const searchCertificateBySerial = async (serialNumber: string): Promise<C
   console.log("Searching for serial number:", serialNumber);
   
   try {
+    const auth = getToken();
     const response = await fetch(`${VALIDATION_BASE_URL}/serial/${serialNumber}`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    headers: {
+      Accept: 'application/json',
+      ...(auth ? { Authorization: `Bearer ${auth}` } : {}),
+    },
     });
 
     if (!response.ok) {

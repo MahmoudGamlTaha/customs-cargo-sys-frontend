@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,useCallback, useEffect } from "react";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { UserRole } from "../../types";
@@ -6,22 +6,31 @@ import StandardTable, { TableColumn } from "../../components/StandardTable";
 import Card from "../../components/Card";
 import CustomSelect from "../../components/CustomSelect";
 import { dummyInquiries, Inquiry } from "../../data/dummyInquiries";
+import { Activity, getAdminActivities } from "@/services/activityService";
+import Button from "@/components/Button";
+import { LinkIcon } from "@heroicons/react/16/solid";
+import { searchCertificateBySerial } from "@/services/public/publicCertificateService";
+import toast from "react-hot-toast";
 
 const BranchInquiriesPage: React.FC = () => {
   const { t } = useLanguage();
   const { user } = useAuth();
-  const [inquiries, setInquiries] = useState<Inquiry[]>([]);
+  const [inquiries, setInquiries] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterBranch, setFilterBranch] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
-
   useEffect(() => {
     // Simulate API call
     const fetchInquiries = async () => {
       setLoading(true);
       // Simulate delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setInquiries(dummyInquiries);
+      const result = await getAdminActivities()
+      if (result.data) {
+        console.log(result.data, "Dataaaa aC");
+        setInquiries(result.data);
+      }
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
+      // setInquiries(dummyInquiries);
       setLoading(false);
     };
 
@@ -31,10 +40,7 @@ const BranchInquiriesPage: React.FC = () => {
   const filteredInquiries = inquiries.filter((inquiry) => {
     // For branch_admin: show only data from their branch (Tripoli)
     // For admin: show all data with filter option
-    const branchMatch =
-      user?.role === UserRole.Admin
-        ? filterBranch === "all" || inquiry.branch === filterBranch
-        : inquiry.branch === "منفذ طرابلس البحري"; // Fixed branch for branch_admin
+    const branchMatch = filterBranch === "all" || inquiry.entity_name === filterBranch
 
     // Search by employee name or ID
     const searchMatch =
@@ -45,30 +51,31 @@ const BranchInquiriesPage: React.FC = () => {
     return branchMatch && searchMatch;
   });
 
-  const getStatusBadge = (status: string) => {
-    if (status === "found") {
-      return (
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-          {t("inquiries.status.found")}
-        </span>
+  
+  const moveToCertificateLink = useCallback(async(sn: string) => {
+    const result = await searchCertificateBySerial(sn)
+    const fixedUrl = `${(import.meta as any).env.VITE_API_CHAMBERS}`;
+    if(result){
+      window.open(
+        `${fixedUrl}#/public/certificate/comisa/${result.qr_identifier}`,
+        "_blank"
       );
+    }else{
+      toast.error('problem in this certificate: FE')
     }
-    return (
-      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
-        {t("inquiries.status.notFound")}
-      </span>
-    );
-  };
+  }, [searchCertificateBySerial])
 
-  const getCertificateDetails = (inquiry: Inquiry) => {
-    if (inquiry.status === "not_found" || !inquiry.certificateDetails) {
+  const getCertificateDetails = (sn: string) => {
+    if (!sn) {
       return "-";
     }
-
     return (
       <div className="text-sm">
-        <a
-          href={`${window.location.origin}/#/public/certificate/free-trade/yyzB4Htp3MMomVP2wzIfJj_pjyiaEgCT6xn9dksfOIcPRBJ6`}
+        <Button variant="outlined" size="sm" icon={<LinkIcon className='size-4'/>} onClick={() => moveToCertificateLink(sn)}>
+          {t("inquiries.viewCertificate")}
+        </Button>
+        {/* <a
+          href={`${window.location.origin}/#/public/certificate/free-trade/`}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center px-2 py-1 text-xs font-medium text-orange-600 bg-orange-50 border border-orange-200 rounded-md hover:bg-orange-100 hover:text-orange-700 transition-colors dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800 dark:hover:bg-orange-900/30"
@@ -86,13 +93,12 @@ const BranchInquiriesPage: React.FC = () => {
               d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
             />
           </svg>
-          {t("inquiries.viewCertificate")}
-        </a>
+        </a> */}
       </div>
     );
   };
 
-  const columns: TableColumn<Inquiry>[] = [
+  const columns: TableColumn<Activity>[] = [
     {
       key: "id",
       header: t("inquiries.table.numbering"),
@@ -104,60 +110,60 @@ const BranchInquiriesPage: React.FC = () => {
       header: t("inquiries.table.employeeId"),
       render: (inquiry) => (
         <span className="font-mono text-sm bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
-          {inquiry.employeeId}
+          {inquiry.user_id}
         </span>
       ),
       className: "text-center",
     },
-    {
-      key: "employeeName",
-      header: t("inquiries.table.employeeName"),
-      render: (inquiry) => (
-        <span className="font-medium text-gray-900 dark:text-gray-100">
-          {inquiry.employeeName}
-        </span>
-      ),
-      className: "text-center",
-    },
+    // {
+    //   key: "employeeName",
+    //   header: t("inquiries.table.employeeName"),
+    //   render: (inquiry) => (
+    //     <span className="font-medium text-gray-900 dark:text-gray-100">
+    //       {inquiry.}
+    //     </span>
+    //   ),
+    //   className: "text-center",
+    // },
     {
       key: "branch",
       header: t("inquiries.table.branch"),
       render: (inquiry) => (
         <span className="text-gray-700 dark:text-gray-300">
-          {inquiry.branch}
+          {inquiry.entity_name}
         </span>
       ),
       className: "text-center",
     },
     {
-      key: "question",
+      key: "description",
       header: t("inquiries.table.question"),
       render: (inquiry) => (
         <div className="max-w-xs">
           <p className="text-sm text-gray-800 dark:text-gray-200 truncate">
-            {inquiry.question}
+            {inquiry.description}
           </p>
         </div>
       ),
       className: "text-center",
     },
-    {
-      key: "status",
-      header: t("inquiries.table.status"),
-      render: (inquiry) => getStatusBadge(inquiry.status),
-      className: "text-center",
-    },
+    // {
+    //   key: "status",
+    //   header: t("inquiries.table.status"),
+    //   render: (inquiry) => getStatusBadge(inquiry.status),
+    //   className: "text-center",
+    // },
     {
       key: "certificateDetails",
       header: t("inquiries.table.certificateDetails"),
-      render: (inquiry) => getCertificateDetails(inquiry),
+      render: (inquiry) => getCertificateDetails(inquiry?.serial_number),
       className: "text-center",
     },
   ];
 
   const branchOptions = [
     { value: "all", label: t("inquiries.filter.allBranches") },
-    ...Array.from(new Set(inquiries.map((inquiry) => inquiry.branch))).map(
+    ...Array.from(new Set(inquiries.map((inquiry) => inquiry?.entity_name))).map(
       (branch) => ({
         value: branch,
         label: branch,
