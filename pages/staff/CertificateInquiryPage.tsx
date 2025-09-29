@@ -378,7 +378,6 @@ const CertificateInquiryPage: React.FC = () => {
                           }}
                         >
                           {result.certificateNumber}
-                          sdsdsdsdsd
                         </strong>
                       </p>
                     </div>
