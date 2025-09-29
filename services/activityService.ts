@@ -8,6 +8,8 @@ export interface Activity {
   module: string;
   username: string;
   entity_id: number;
+  entity_name?: string;
+  serial_number?: string;
 }
 
 export interface ActivitiesResponse {
@@ -19,7 +21,7 @@ export interface ActivitiesResponse {
 
 export const getAdminActivities = async (
   page: number = 1,
-  pageSize: number = 3
+  pageSize: number = 10
 ): Promise<ActivitiesResponse> => {
   const token = getToken();
 
