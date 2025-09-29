@@ -67,8 +67,8 @@ export async function getBranches(token?: string): Promise<ApiListResult> {
     return { success: false, message, status: resp.status, data };
   }
 
-  const processedData = dataProcessor.processBranchesToPorts(data);
-  return { success: true, data: processedData, status: resp.status };
+  // const processedData = dataProcessor.processBranchesToPorts(data);
+  return { success: true, data: data, status: resp.status };
 }
 
 export async function createBranch(branchData: Omit<Branch, 'id'>, token?: string): Promise<ApiListResult> {
@@ -214,68 +214,68 @@ export function clearReplacementData() {
  * Test the DataProcessor with sample data
  * @returns Test result
  */
-export function testDataProcessor() {
-  console.log('Testing DataProcessor...');
+// export function testDataProcessor() {
+//   console.log('Testing DataProcessor...');
   
-  // Test with sample data
-  const sampleResponse = {
-    success: true,
-    message: "Branches retrieved",
-    data: {
-      branches: [
-        {
-          id: 32,
-          name: "الاتحاد",
-          code: "001",
-          address: "طرابلس",
-          phone: "1111111111111",
-          email: "glucc@gmail.com"
-        },
-        {
-          id: 23,
-          name: "طرابلس",
-          code: "TNT",
-          address: "22St -Lybia",
-          phone: "0555555555",
-          email: "T@yahoo.com"
-        },
-        {
-          id: 33,
-          name: "غرفة التجارة والصناعة والزراعة - هلال العاصمة",
-          code: "003",
-          address: "طرابلس جنزور",
-          phone: "00218913434444",
-          email: "info@gucc.ly"
-        }
-      ],
-      pagination: {
-        page: 1,
-        page_size: 20,
-        total: 3,
-        total_pages: 1
-      }
-    },
-    timestamp: new Date().toISOString()
-  };
+//   // Test with sample data
+//   const sampleResponse = {
+//     success: true,
+//     message: "Branches retrieved",
+//     data: {
+//       branches: [
+//         {
+//           id: 32,
+//           name: "الاتحاد",
+//           code: "001",
+//           address: "طرابلس",
+//           phone: "1111111111111",
+//           email: "glucc@gmail.com"
+//         },
+//         {
+//           id: 23,
+//           name: "طرابلس",
+//           code: "TNT",
+//           address: "22St -Lybia",
+//           phone: "0555555555",
+//           email: "T@yahoo.com"
+//         },
+//         {
+//           id: 33,
+//           name: "غرفة التجارة والصناعة والزراعة - هلال العاصمة",
+//           code: "003",
+//           address: "طرابلس جنزور",
+//           phone: "00218913434444",
+//           email: "info@gucc.ly"
+//         }
+//       ],
+//       pagination: {
+//         page: 1,
+//         page_size: 20,
+//         total: 3,
+//         total_pages: 1
+//       }
+//     },
+//     timestamp: new Date().toISOString()
+//   };
   
-  const result = dataProcessor.processBranchesToPorts(sampleResponse);
-  console.log('Test result:', result);
-  return result;
-}
+//   const result = dataProcessor.processBranchesToPorts(sampleResponse);
+//   console.log('Test result:', result);
+//   return result;
+// }
 
 /**
  * Test the getFilteredUsersCount method
  * @returns Test result
  */
-export async function testFilteredUsersCount() {
-  console.log('Testing Filtered Users Count from branchService...');
+// export async function testFilteredUsersCount() {
+//   console.log('Testing Filtered Users Count from branchService...');
   
-  try {
-    const count = await dataProcessor.getFilteredUsersCount();
-    console.log('Filtered users count:', count);
-    return count;
-  } catch (error) {
-    console.error('Error testing filtered users count:', error);
-    return 0;
-  }
-}
+//   try {
+//     const count = await dataProcessor.getFilteredUsersCount();
+//     console.log('Filtered users count:', count);
+//     return count;
+//   } catch (error) {
+//     console.error('Error testing filtered users count:', error);
+//     return 0;
+//   }
+// }

@@ -1,6 +1,6 @@
 import { getToken } from '@/utils/getToken';
 import { User, UserRole } from '../types';
-import { dataProcessor, RolesResponse, UsersResponse } from '@/utils/DataProcessor';
+// import { dataProcessor, RolesResponse, UsersResponse } from '@/utils/DataProcessor';
 import { IResponse } from './authService';
 
 const DEFAULT_BASE_URL = 'http://localhost:8080/api/v1';
@@ -252,12 +252,12 @@ export async function listAdminUsers(token?: string, page?: number, pageSize?: n
   }
 
   // Process the data using DataProcessor
-  console.log("Processing users data...");
-  console.log("DataProcessor status:", dataProcessor.getStatus());
-  const processedData = dataProcessor.processUsers(data as UsersResponse);
-  console.log("Processed users data:", processedData);
+  // console.log("Processing users data...");
+  // console.log("DataProcessor status:", dataProcessor.getStatus());
+  // const processedData = dataProcessor.processUsers(data as UsersResponse);
+  // console.log("Processed users data:", processedData);
 
-  return { success: true, data: processedData, status: resp.status };
+  return { success: true, data: data, status: resp.status };
 }
 
 
@@ -283,200 +283,200 @@ export async function GetAllRoles(): Promise<ListAdminUsersResult> {
   }
 
   // Process the data using DataProcessor
-  console.log("Processing roles data...");
-  const processedData = dataProcessor.processRoles(data as RolesResponse);
-  console.log("Processed roles data:", processedData);
+  // console.log("Processing roles data...");
+  // const processedData = dataProcessor.processRoles(data as RolesResponse);
+  // console.log("Processed roles data:", processedData);
 
-  return { success: true, data: processedData, status: resp.status };
+  return { success: true, data: data, status: resp.status };
 }
 
 /**
  * Test the DataProcessor with sample roles data
  * @returns Test result
  */
-export function testRolesProcessor() {
-  console.log('Testing Roles DataProcessor...');
+// export function testRolesProcessor() {
+//   console.log('Testing Roles DataProcessor...');
   
-  // Test with sample data
-  const sampleRolesResponse = {
-    success: true,
-    message: "Roles retrieved successfully",
-    data: [
-      {
-        id: 2,
-        created_at: "0001-01-01T00:00:00Z",
-        updated_at: "0001-01-01T00:00:00Z",
-        name_ar: "عميل",
-        name_en: "Client",
-        code: "client"
-      },
-      {
-        id: 3,
-        created_at: "0001-01-01T00:00:00Z",
-        updated_at: "0001-01-01T00:00:00Z",
-        name_ar: "موظف",
-        name_en: "Staff",
-        code: "staff"
-      },
-      {
-        id: 4,
-        created_at: "0001-01-01T00:00:00Z",
-        updated_at: "0001-01-01T00:00:00Z",
-        name_ar: "مسؤول",
-        name_en: "Admin",
-        code: "admin"
-      },
-      {
-        id: 5,
-        created_at: "0001-01-01T00:00:00Z",
-        updated_at: "0001-01-01T00:00:00Z",
-        name_ar: "محاسب",
-        name_en: "Accountant",
-        code: "accountant"
-      },
-      {
-        id: 6,
-        created_at: "0001-01-01T00:00:00Z",
-        updated_at: "0001-01-01T00:00:00Z",
-        name_ar: "مدقق",
-        name_en: "Auditor",
-        code: "auditor"
-      },
-      {
-        id: 13,
-        created_at: "0001-01-01T00:00:00Z",
-        updated_at: "0001-01-01T00:00:00Z",
-        name_ar: "مدير غرفة",
-        name_en: "branch_admin",
-        code: "branch_admin"
-      }
-    ],
-    timestamp: "2025-09-23T19:35:10.5106581Z"
-  };
+//   // Test with sample data
+//   const sampleRolesResponse = {
+//     success: true,
+//     message: "Roles retrieved successfully",
+//     data: [
+//       {
+//         id: 2,
+//         created_at: "0001-01-01T00:00:00Z",
+//         updated_at: "0001-01-01T00:00:00Z",
+//         name_ar: "عميل",
+//         name_en: "Client",
+//         code: "client"
+//       },
+//       {
+//         id: 3,
+//         created_at: "0001-01-01T00:00:00Z",
+//         updated_at: "0001-01-01T00:00:00Z",
+//         name_ar: "موظف",
+//         name_en: "Staff",
+//         code: "staff"
+//       },
+//       {
+//         id: 4,
+//         created_at: "0001-01-01T00:00:00Z",
+//         updated_at: "0001-01-01T00:00:00Z",
+//         name_ar: "مسؤول",
+//         name_en: "Admin",
+//         code: "admin"
+//       },
+//       {
+//         id: 5,
+//         created_at: "0001-01-01T00:00:00Z",
+//         updated_at: "0001-01-01T00:00:00Z",
+//         name_ar: "محاسب",
+//         name_en: "Accountant",
+//         code: "accountant"
+//       },
+//       {
+//         id: 6,
+//         created_at: "0001-01-01T00:00:00Z",
+//         updated_at: "0001-01-01T00:00:00Z",
+//         name_ar: "مدقق",
+//         name_en: "Auditor",
+//         code: "auditor"
+//       },
+//       {
+//         id: 13,
+//         created_at: "0001-01-01T00:00:00Z",
+//         updated_at: "0001-01-01T00:00:00Z",
+//         name_ar: "مدير غرفة",
+//         name_en: "branch_admin",
+//         code: "branch_admin"
+//       }
+//     ],
+//     timestamp: "2025-09-23T19:35:10.5106581Z"
+//   };
   
-  const result = dataProcessor.processRoles(sampleRolesResponse);
-  console.log('Test result:', result);
-  return result;
-}
+//   const result = dataProcessor.processRoles(sampleRolesResponse);
+//   console.log('Test result:', result);
+//   return result;
+// }
 
 /**
  * Test the DataProcessor with sample users data
  * @returns Test result
  */
-export function testUsersProcessor() {
-  console.log('Testing Users DataProcessor...');
+// export function testUsersProcessor() {
+//   console.log('Testing Users DataProcessor...');
   
-  // Test with sample data
-  const sampleUsersResponse = {
-    success: true,
-    message: "Users retrieved",
-    data: {
-      pagination: {
-        page: 1,
-        page_size: 10,
-        total: 11,
-        total_pages: 2
-      },
-      users: [
-        {
-          id: 68,
-          created_at: "2025-09-18T09:16:34.958531Z",
-          updated_at: "0001-01-01T00:00:00Z",
-          username: "AhmedQassem@G.com",
-          email: "AhmedQassem@G.com",
-          first_name: "احمد",
-          last_name: "قاسم",
-          phone: "55623654785",
-          role_id: null,
-          company_id: null,
-          branch_id: 32,
-          is_active: true,
-          email_verified: true,
-          is_password_reset_required: false,
-          last_login: null,
-          role: "admin"
-        },
-        {
-          id: 67,
-          created_at: "2025-09-17T12:55:17.303094Z",
-          updated_at: "0001-01-01T00:00:00Z",
-          username: "finance-1",
-          email: "fin@gucc.ly",
-          first_name: "سامي",
-          last_name: "الاتحادي",
-          phone: "0913434444",
-          role_id: null,
-          company_id: null,
-          branch_id: 33,
-          is_active: true,
-          email_verified: true,
-          is_password_reset_required: false,
-          last_login: null,
-          role: "accountant"
-        },
-        {
-          id: 66,
-          created_at: "2025-09-17T12:53:26.866485Z",
-          updated_at: "0001-01-01T00:00:00Z",
-          username: "Osama-02",
-          email: "osama@gucc.ly",
-          first_name: "أسامة ",
-          last_name: "بن سونس",
-          phone: "0913434444",
-          role_id: null,
-          company_id: null,
-          branch_id: 33,
-          is_active: true,
-          email_verified: true,
-          is_password_reset_required: false,
-          last_login: null,
-          role: "auditor"
-        },
-        {
-          id: 65,
-          created_at: "2025-09-17T12:47:39.39742Z",
-          updated_at: "0001-01-01T00:00:00Z",
-          username: "sami-1",
-          email: "ggucc@gucc.ly",
-          first_name: "sami",
-          last_name: "ali",
-          phone: "0913434444",
-          role_id: null,
-          company_id: null,
-          branch_id: 33,
-          is_active: true,
-          email_verified: true,
-          is_password_reset_required: false,
-          last_login: null,
-          role: "staff"
-        },
-        {
-          id: 64,
-          created_at: "2025-09-17T12:40:53.499103Z",
-          updated_at: "0001-01-01T00:00:00Z",
-          username: "zyad-1",
-          email: "gucc@gucc.ly",
-          first_name: "زياد",
-          last_name: "وادي",
-          phone: "0913434444",
-          role_id: null,
-          company_id: null,
-          branch_id: 33,
-          is_active: true,
-          email_verified: true,
-          is_password_reset_required: false,
-          last_login: null,
-          role: "branch_admin"
-        }
-      ]
-    },
-    timestamp: "2025-09-23T19:44:07.3459576Z"
-  };
+//   // Test with sample data
+//   const sampleUsersResponse = {
+//     success: true,
+//     message: "Users retrieved",
+//     data: {
+//       pagination: {
+//         page: 1,
+//         page_size: 10,
+//         total: 11,
+//         total_pages: 2
+//       },
+//       users: [
+//         {
+//           id: 68,
+//           created_at: "2025-09-18T09:16:34.958531Z",
+//           updated_at: "0001-01-01T00:00:00Z",
+//           username: "AhmedQassem@G.com",
+//           email: "AhmedQassem@G.com",
+//           first_name: "احمد",
+//           last_name: "قاسم",
+//           phone: "55623654785",
+//           role_id: null,
+//           company_id: null,
+//           branch_id: 32,
+//           is_active: true,
+//           email_verified: true,
+//           is_password_reset_required: false,
+//           last_login: null,
+//           role: "admin"
+//         },
+//         {
+//           id: 67,
+//           created_at: "2025-09-17T12:55:17.303094Z",
+//           updated_at: "0001-01-01T00:00:00Z",
+//           username: "finance-1",
+//           email: "fin@gucc.ly",
+//           first_name: "سامي",
+//           last_name: "الاتحادي",
+//           phone: "0913434444",
+//           role_id: null,
+//           company_id: null,
+//           branch_id: 33,
+//           is_active: true,
+//           email_verified: true,
+//           is_password_reset_required: false,
+//           last_login: null,
+//           role: "accountant"
+//         },
+//         {
+//           id: 66,
+//           created_at: "2025-09-17T12:53:26.866485Z",
+//           updated_at: "0001-01-01T00:00:00Z",
+//           username: "Osama-02",
+//           email: "osama@gucc.ly",
+//           first_name: "أسامة ",
+//           last_name: "بن سونس",
+//           phone: "0913434444",
+//           role_id: null,
+//           company_id: null,
+//           branch_id: 33,
+//           is_active: true,
+//           email_verified: true,
+//           is_password_reset_required: false,
+//           last_login: null,
+//           role: "auditor"
+//         },
+//         {
+//           id: 65,
+//           created_at: "2025-09-17T12:47:39.39742Z",
+//           updated_at: "0001-01-01T00:00:00Z",
+//           username: "sami-1",
+//           email: "ggucc@gucc.ly",
+//           first_name: "sami",
+//           last_name: "ali",
+//           phone: "0913434444",
+//           role_id: null,
+//           company_id: null,
+//           branch_id: 33,
+//           is_active: true,
+//           email_verified: true,
+//           is_password_reset_required: false,
+//           last_login: null,
+//           role: "staff"
+//         },
+//         {
+//           id: 64,
+//           created_at: "2025-09-17T12:40:53.499103Z",
+//           updated_at: "0001-01-01T00:00:00Z",
+//           username: "zyad-1",
+//           email: "gucc@gucc.ly",
+//           first_name: "زياد",
+//           last_name: "وادي",
+//           phone: "0913434444",
+//           role_id: null,
+//           company_id: null,
+//           branch_id: 33,
+//           is_active: true,
+//           email_verified: true,
+//           is_password_reset_required: false,
+//           last_login: null,
+//           role: "branch_admin"
+//         }
+//       ]
+//     },
+//     timestamp: "2025-09-23T19:44:07.3459576Z"
+//   };
   
-  const result = dataProcessor.processUsers(sampleUsersResponse);
-  console.log('Test result:', result);
-  return result;
-}
+//   const result = dataProcessor.processUsers(sampleUsersResponse);
+//   console.log('Test result:', result);
+//   return result;
+// }
 
 export async function createNewRole(role: Role): Promise<ListAdminUsersResult> {
   const auth = getToken() || getAuthToken();
