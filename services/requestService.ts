@@ -14,6 +14,11 @@ const ACTIVITIES_BASE_URL: string = (import.meta as any)?.env?.VITE_API_BASE_URL
   ? `${(import.meta as any).env.VITE_API_BASE_URL.replace(/\/$/, '')}/api/v1/activities`
   : DEFAULT_ACTIVITIES_BASE_URL;
 
+
+const BASE_URL_SOURCE: string = `${(
+  import.meta as any
+).env.VITE_API_BASE_URL.replace(/\/$/, "")}/api/v1`;
+
 // Exact payload shape expected by the API
 export interface RequestDetailPayload {
   client_name: string;
@@ -592,3 +597,27 @@ export async function GetRequestsCount(): Promise<IResponse> {
   return { success: true, data, status: resp.status };
 }
 
+export async function GetMembershipByIdPublic(id: string): Promise<IResponse> {
+  if (id) {
+    const url = `${BASE_URL_SOURCE}/membership/check/${id}`;
+    const resp = await fetch(url, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+      // body: JSON.stringify(req),
+    });
+    let data: any = undefined;
+    try {
+      data = await resp.json();
+    } catch { }
+
+    if (!resp.ok) {
+      const message =
+        (data && (data.message || data.error || data.msg)) ||
+        (await parseError(resp));
+      return { success: false, message, status: resp.status, data };
+    }
+    return { success: true, data, status: resp.status };
+  }
+}

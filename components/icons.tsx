@@ -10,7 +10,7 @@ export const OfficialLogoIcon: React.FC<{ className?: string }> = ({
   className,
 }) => (
   <img
-    src="/gray_customs_long_600x134.png"
+    src={import.meta.env.VITE_LOGO_PATH}
     alt="Libya Chambers Digital Hub Logo"
     className={className}
   />
@@ -21,7 +21,7 @@ export const SidebarLogoIcon: React.FC<{ className?: string }> = ({
   className,
 }) => (
   <img
-    src="/white_customs_long.png"
+    src="/gray_customs_long_600x134.png"
     alt="Libya Chambers Digital Hub Logo"
     className={className}
   />

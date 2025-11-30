@@ -184,12 +184,14 @@ export enum InvoiceStatus {
 }
 
 export enum RequestStatus {
-  ISSUED = 'ISSUED',
-  APPROVED = 'APPROVED',
-  COMPLETED = 'COMPLETED',
-  REJECTED = 'REJECTED',
-  ON_HOLD = 'ON_HOLD',
-  PAID = 'PAID',
+  ISSUED = "ISSUED",
+  APPROVED = "APPROVED",
+  COMPLETED = "COMPLETED",
+  REJECTED = "REJECTED",
+  ON_HOLD = "ON_HOLD",
+  PAID = "PAID",
+  CANCELLED = "CANCELLED",
+  EXPIRED = "EXPIRED",
 }
 
 export interface MemberProfile {
