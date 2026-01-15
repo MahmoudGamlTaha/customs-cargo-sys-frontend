@@ -8,6 +8,7 @@ import {
 } from "../../services/public/publicCertificateService";
 import Card from "../../components/Card";
 import { GetMembershipByIdPublic } from "@/services/requestService";
+import { CheckBadgeIcon, ExclamationCircleIcon } from "@heroicons/react/16/solid";
 
 const CertificateInquiryPage: React.FC = () => {
   const [isMembershipInquery, setIsMembershipInquery] =
@@ -90,27 +91,27 @@ const CertificateInquiryPage: React.FC = () => {
         });
       }
     } else {
-    try {
-      const certificateData = await searchCertificateBySerial(
-        certificateNumber.trim()
-      );
+      try {
+        const certificateData = await searchCertificateBySerial(
+          certificateNumber.trim()
+        );
 
-      setResult({
-        found: true,
-        certificateNumber: certificateNumber.trim(),
-        message: t("certificateValidation.foundSuccess"),
-        certificateData: certificateData,
-      });
-    } catch (error) {
-      console.error("Error validating certificate:", error);
-      setResult({
-        found: false,
-        certificateNumber: certificateNumber.trim(),
-        message: t("certificateValidation.notFound"),
-      });
-    } finally {
-      setLoading(false);
-    }
+        setResult({
+          found: true,
+          certificateNumber: certificateNumber.trim(),
+          message: t("certificateValidation.foundSuccess"),
+          certificateData: certificateData,
+        });
+      } catch (error) {
+        console.error("Error validating certificate:", error);
+        setResult({
+          found: false,
+          certificateNumber: certificateNumber.trim(),
+          message: t("certificateValidation.notFound"),
+        });
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -133,7 +134,7 @@ const CertificateInquiryPage: React.FC = () => {
     } else {
 
       if (requestTypeId === 1) {
-      // COMESA Certificate
+        // COMESA Certificate
 
         window.open(
           `${fixedUrl}#/public/certificate/comisa/${result.certificateData.qr_identifier}`,
@@ -170,6 +171,62 @@ const CertificateInquiryPage: React.FC = () => {
   const handleTryAgain = () => {
     setResult(null);
     setCertificateNumber("");
+  };
+
+
+  const getMembershipStatusClasses = (status: "EXPIRED" | "PAID" | "CANCELLED") => {
+    switch (status) {
+      case "EXPIRED":
+        return "text-red-600 dark:text-red-400";
+      case "CANCELLED":
+        return "text-orange-600 dark:text-orange-400";
+      case "PAID":
+        return "text-green-600 dark:text-green-400";
+      default:
+        return "text-gray-600 dark:text-gray-400";
+    }
+  };
+
+  const getMembershipStatusIcon = (status: "EXPIRED" | "PAID" | "CANCELLED") => {
+    switch (status) {
+      case "EXPIRED":
+        return (
+          <div className="size-20 bg-red-100 dark:bg-red-900  rounded-full flex items-center justify-center mx-auto mb-4">
+            <ExclamationCircleIcon className="size-12 text-red-600 dark:text-red-400" />
+          </div>
+        )
+      case "CANCELLED":
+        return (
+          <div className="size-20 bg-orange-100 dark:bg-orange-900  rounded-full flex items-center justify-center mx-auto mb-4">
+            <ExclamationCircleIcon className="size-12 text-orange-600 dark:text-orange-400" />
+          </div>
+        );
+      case "PAID":
+        return (
+          <div className="size-20 bg-green-100 dark:bg-green-900  rounded-full flex items-center justify-center mx-auto mb-4">
+            <CheckBadgeIcon className="size-12 text-green-600 dark:text-green-400" />
+          </div>
+        );
+      default:
+        return (
+          <div className="size-20 bg-green-100 dark:bg-green-900  rounded-full flex items-center justify-center mx-auto mb-4">
+            <CheckBadgeIcon className="size-12 text-green-600 dark:text-green-400" />
+          </div>
+        );
+    }
+  };
+
+  const getMembershipStatusText = (status: "EXPIRED" | "PAID" | "CANCELLED") => {
+    switch (status) {
+      case "EXPIRED":
+        return t("certificateInquiry.membershipExpiredTitle");
+      case "CANCELLED":
+        return t("certificateInquiry.membershipCanceledTitle");
+      case "PAID":
+        return t("certificateInquiry.memberShipfound");
+      default:
+        return t("certificateInquiry.memberShipfound");
+    }
   };
 
   return (
@@ -241,9 +298,8 @@ const CertificateInquiryPage: React.FC = () => {
                 {currentLanguage?.name}
               </span>
               <svg
-                className={`w-4 h-4 text-gray-500 transition-transform ${
-                  isLanguageDropdownOpen ? "rotate-180" : ""
-                }`}
+                className={`w-4 h-4 text-gray-500 transition-transform ${isLanguageDropdownOpen ? "rotate-180" : ""
+                  }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -266,11 +322,10 @@ const CertificateInquiryPage: React.FC = () => {
                       setLanguage(lang.code as "ar" | "en" | "fr");
                       setIsLanguageDropdownOpen(false);
                     }}
-                    className={`w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg ${
-                      language === lang.code
-                        ? "bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-300"
-                        : "text-gray-700 dark:text-gray-300"
-                    }`}
+                    className={`w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg ${language === lang.code
+                      ? "bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-300"
+                      : "text-gray-700 dark:text-gray-300"
+                      }`}
                   >
                     <span className="text-xl">{lang.flag}</span>
                     <span className="text-sm font-medium">{lang.name}</span>
@@ -327,24 +382,10 @@ const CertificateInquiryPage: React.FC = () => {
                 {result.found ? (
                   <div>
                     <div className="mb-6">
-                      <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg
-                          className="w-8 h-8 text-green-600 dark:text-green-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                      </div>
-                      <h3 className="text-2xl font-bold text-green-600 dark:text-green-400 mb-2">
+                      {getMembershipStatusIcon(result.certificateData?.status)}
+                      <h3 className={`${getMembershipStatusClasses(result.certificateData?.status)} text-2xl font-bold mb-2`}>
                         {isMembershipInquery
-                          ? t("certificateInquiry.memberShipfound")
+                          ? getMembershipStatusText(result.certificateData?.status)
                           : t("certificateInquiry.found")}
                       </h3>
                       <p className="certificate-number text-gray-600 dark:text-gray-400 ">
@@ -402,10 +443,8 @@ const CertificateInquiryPage: React.FC = () => {
                             <span className="font-medium text-gray-600 dark:text-gray-400">
                               {t("certificateInquiry.status")}:
                             </span>
-                            <span className="mr-2 text-green-600 dark:text-green-400 font-medium">
-                              {result.certificateData.status === "PAID"
-                                ? t("certificateInquiry.paid")
-                                : result.certificateData.status}
+                            <span className={`${getMembershipStatusClasses(result.certificateData?.status)} mr-2 font-medium`}>
+                              {t(`status.${result.certificateData.status}`)}
                             </span>
                           </div>
                           <div>
@@ -460,20 +499,20 @@ const CertificateInquiryPage: React.FC = () => {
                         </svg>
                       </div>
                       <h3 className="text-2xl font-bold text-red-600 dark:text-red-400 mb-2">
-                          {isMembershipInquery
-                            ? t("certificateInquiry.membershipNotFound")
-                            : t("certificateInquiry.notFound")}
+                        {isMembershipInquery
+                          ? t("certificateInquiry.membershipNotFound")
+                          : t("certificateInquiry.notFound")}
                       </h3>
                       <p className="text-gray-600 dark:text-gray-400 mb-4">
-                          {isMembershipInquery
-                            ? t("certificateInquiry.membershipNotFoundMessage")
-                            : t("certificateInquiry.notFoundMessage")}
+                        {isMembershipInquery
+                          ? t("certificateInquiry.membershipNotFoundMessage")
+                          : t("certificateInquiry.notFoundMessage")}
                       </p>
                       <p className="text-sm text-gray-500 dark:text-gray-500">
-                          {isMembershipInquery
-                            ? t("certificateInquiry.membershipCertificateNumber")
-                            : t("certificateInquiry.certificateNumber")}
-                          :{" "}
+                        {isMembershipInquery
+                          ? t("certificateInquiry.membershipCertificateNumber")
+                          : t("certificateInquiry.certificateNumber")}
+                        :{" "}
                         <strong
                           className="certificate-number"
                           style={{
