@@ -7,8 +7,11 @@ import {
   CertificateValidationData,
 } from "../../services/public/publicCertificateService";
 import Card from "../../components/Card";
+import { GetMembershipByIdPublic } from "@/services/requestService";
 
 const CertificateInquiryPage: React.FC = () => {
+  const [isMembershipInquery, setIsMembershipInquery] =
+    useState<boolean>(false);
   const navigate = useNavigate();
   const { t, language, setLanguage } = useLanguage();
   const [certificateNumber, setCertificateNumber] = useState<string>("");
@@ -67,7 +70,26 @@ const CertificateInquiryPage: React.FC = () => {
 
     setLoading(true);
     setResult(null);
-
+    if (isMembershipInquery) {
+      const result = await GetMembershipByIdPublic(certificateNumber.trim());
+      if (result.success) {
+        console.log(result?.data, "DDD")
+        setLoading(false);
+        setResult({
+          found: true,
+          certificateNumber: certificateNumber.trim(),
+          message: t("certificateInquiry.memberShipfound"),
+          certificateData: result.data?.data,
+        });
+      } else {
+        setLoading(false);
+        setResult({
+          found: false,
+          certificateNumber: certificateNumber.trim(),
+          message: t("certificateValidation.memberShipNotFound"),
+        });
+      }
+    } else {
     try {
       const certificateData = await searchCertificateBySerial(
         certificateNumber.trim()
@@ -89,39 +111,61 @@ const CertificateInquiryPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
+    }
   };
 
   const handleViewCertificate = () => {
-    if (!result?.certificateData?.qr_identifier) {
-      alert(t("certificateValidation.featureNotImplemented"));
-      return;
-    }
+    console.log(result?.certificateData?.qr_identifier, "QR")
+    // if (!result?.certificateData?.qr_identifier) {
+    //   alert(t("certificateValidation.featureNotImplemented"));
+    //   return;
+    // }
 
     const fixedUrl = `${(import.meta as any).env.VITE_API_CHAMBERS}`;
     // Determine the certificate type based on request_type_id
     const requestTypeId = result.certificateData.request_type_id;
+    if (isMembershipInquery) {
+      // http://51.20.121.17/#/public/certificate/membership/131
+      window.open(
+        `${fixedUrl}#/public/certificate/membership/${result.certificateData.id}`,
+        "_blank"
+      );
+    } else {
 
-    if (requestTypeId === 1) {
+      if (requestTypeId === 1) {
       // COMESA Certificate
 
-      window.open(
-        `${fixedUrl}#/public/certificate/comisa/${result.certificateData.qr_identifier}`,
-        "_blank"
-      );
-    } else if (requestTypeId === 2) {
-      // Free Trade Certificate
-      window.open(
-        `${fixedUrl}#/public/certificate/free-trade/${result.certificateData.qr_identifier}`,
-        "_blank"
-      );
-      // navigate(
-      //   `${fixedUrl}#/public/certificate/free-trade/${result.certificateData.qr_identifier}`
-      // );
-    } else {
-      // Unknown type - show error
-      alert(t("certificateValidation.featureNotImplemented"));
-    }
-  };
+        window.open(
+          `${fixedUrl}#/public/certificate/comisa/${result.certificateData.qr_identifier}`,
+          "_blank"
+        );
+      } else if (requestTypeId === 2) {
+        // Free Trade Certificate
+        window.open(
+          `${fixedUrl}#/public/certificate/free-trade/${result.certificateData.qr_identifier}`,
+          "_blank"
+        );
+      }
+      else if (requestTypeId === 6) {
+        // Free Trade Certificate
+        window.open(
+          `${fixedUrl}#/public/certificate/origin/${result.certificateData.id}`,
+          "_blank"
+        );
+      }
+      else if (requestTypeId === 7) {
+        // Free Trade Certificate
+        window.open(
+          `${fixedUrl}#/public/certificate/free-trade-copy/${result.certificateData.qr_identifier}`,
+          "_blank"
+        );
+      }
+      else {
+        // Unknown type - show error
+        alert(t("certificateValidation.featureNotImplemented"));
+      }
+    };
+  }
 
   const handleTryAgain = () => {
     setResult(null);
@@ -142,11 +186,47 @@ const CertificateInquiryPage: React.FC = () => {
           />
 
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4">
-            {t("certificateInquiry.title")}
+            {isMembershipInquery
+              ? t("certificateInquiry.membershipTitle")
+              : t("certificateInquiry.title")}
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-            {t("certificateInquiry.subtitle")}
+            {isMembershipInquery
+              ? t("certificateInquiry.membershipSubtitle")
+              : t("certificateInquiry.subtitle")}
           </p>
+        </div>
+        {/* <div className="text-center mb-8">
+          <OfficialLogoIcon
+            clsName="h-16 sm:h-20 mx-auto dark:invert mb-6"
+            style={{
+              wih: "120px",
+              heht: "120px",
+            }}
+          /> */}
+        <div className="flex gap-4 justify-center my-5">
+          <button
+            onClick={() => {
+              setIsMembershipInquery(false);
+            }}
+            className={`${!isMembershipInquery
+              ? "px-6 py-3 bg-orange-600 text-white font-medium rounded-lg hover:bg-orange-700 transition-colors"
+              : "px-6 py-3 bg-gray-400 text-white font-medium rounded-lg hover:bg-gray-300 transition-colors"
+              } `}
+          >
+            {t("certificateInquiry.docInqueryBtn")}
+          </button>
+          <button
+            onClick={() => {
+              setIsMembershipInquery(true);
+            }}
+            className={`${isMembershipInquery
+              ? "px-6 py-3 bg-orange-600 text-white font-medium rounded-lg hover:bg-orange-700 transition-colors"
+              : "px-6 py-3 bg-gray-400 text-white font-medium rounded-lg hover:bg-gray-300 transition-colors"
+              } `}
+          >
+            {t("certificateInquiry.membershipInqueyBtn")}
+          </button>
         </div>
 
         {/* Language Toggle */}
@@ -207,14 +287,20 @@ const CertificateInquiryPage: React.FC = () => {
             <div className="max-w-2xl mx-auto">
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {t("certificateInquiry.searchLabel")}
+                  {isMembershipInquery
+                    ? t("certificateInquiry.membershipSearchLabel")
+                    : t("certificateInquiry.searchLabel")}
                 </label>
                 <div className="flex space-x-4">
                   <input
                     type="text"
                     value={certificateNumber}
                     onChange={(e) => setCertificateNumber(e.target.value)}
-                    placeholder={t("certificateInquiry.searchPlaceholder")}
+                    placeholder={
+                      isMembershipInquery
+                        ? t("certificateInquiry.membershipSearchPlaceholder")
+                        : t("certificateInquiry.searchPlaceholder")
+                    }
                     className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white"
                     onKeyPress={(e) => e.key === "Enter" && handleSearch()}
                   />
@@ -257,10 +343,15 @@ const CertificateInquiryPage: React.FC = () => {
                         </svg>
                       </div>
                       <h3 className="text-2xl font-bold text-green-600 dark:text-green-400 mb-2">
-                        {t("certificateInquiry.found")}
+                        {isMembershipInquery
+                          ? t("certificateInquiry.memberShipfound")
+                          : t("certificateInquiry.found")}
                       </h3>
                       <p className="certificate-number text-gray-600 dark:text-gray-400 ">
-                        {t("certificateInquiry.certificateNumber")}:{" "}
+                        {isMembershipInquery
+                          ? t("certificateInquiry.membershipCertificateNumber")
+                          : t("certificateInquiry.certificateNumber")}
+                        :{" "}
                         <strong
                           style={{
                             direction: "ltr",
@@ -276,36 +367,42 @@ const CertificateInquiryPage: React.FC = () => {
                     {result.certificateData && (
                       <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-6">
                         <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
-                          {t("certificateInquiry.certificateDetails")}
+                          {isMembershipInquery
+                            ? t(
+                              "certificateInquiry.membershipCertificateDetails"
+                            )
+                            : t("certificateInquiry.certificateDetails")}
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                           <div>
                             <span className="font-medium text-gray-600 dark:text-gray-400">
                               {t("certificateInquiry.issueDate")}:
                             </span>
-                            <span className="ml-2 text-gray-800 dark:text-gray-200">
+                            <span className="mr-2 text-gray-800 dark:text-gray-200">
                               {new Date(
                                 result.certificateData.created_at
-                              ).toLocaleDateString("ar-SA")}
+                              ).toLocaleDateString("en-US")}
                             </span>
                           </div>
                           <div>
                             <span className="font-medium text-gray-600 dark:text-gray-400">
                               {t("certificateInquiry.approvalDate")}:
                             </span>
-                            <span className="ml-2 text-gray-800 dark:text-gray-200">
+                            <span className="mr-2 text-gray-800 dark:text-gray-200">
                               {result.certificateData.approved_at
                                 ? new Date(
-                                    result.certificateData.approved_at
-                                  ).toLocaleDateString("ar-SA")
-                                : t("certificateInquiry.notApproved")}
+                                  result.certificateData.updated_at
+                                ).toLocaleDateString("en-US")
+                                : new Date(
+                                  result.certificateData.created_at
+                                ).toLocaleDateString("en-US")}
                             </span>
                           </div>
                           <div>
                             <span className="font-medium text-gray-600 dark:text-gray-400">
                               {t("certificateInquiry.status")}:
                             </span>
-                            <span className="ml-2 text-green-600 dark:text-green-400 font-medium">
+                            <span className="mr-2 text-green-600 dark:text-green-400 font-medium">
                               {result.certificateData.status === "PAID"
                                 ? t("certificateInquiry.paid")
                                 : result.certificateData.status}
@@ -320,7 +417,7 @@ const CertificateInquiryPage: React.FC = () => {
                                 direction: "ltr",
                                 unicodeBidi: "bidi-override",
                               }}
-                              className="ml-2 text-gray-800 dark:text-gray-200"
+                              className="mr-2 text-gray-800 dark:text-gray-200"
                             >
                               {result.certificateData.serial_number}
                             </span>
@@ -363,13 +460,20 @@ const CertificateInquiryPage: React.FC = () => {
                         </svg>
                       </div>
                       <h3 className="text-2xl font-bold text-red-600 dark:text-red-400 mb-2">
-                        {t("certificateInquiry.notFound")}
+                          {isMembershipInquery
+                            ? t("certificateInquiry.membershipNotFound")
+                            : t("certificateInquiry.notFound")}
                       </h3>
                       <p className="text-gray-600 dark:text-gray-400 mb-4">
-                        {t("certificateInquiry.notFoundMessage")}
+                          {isMembershipInquery
+                            ? t("certificateInquiry.membershipNotFoundMessage")
+                            : t("certificateInquiry.notFoundMessage")}
                       </p>
                       <p className="text-sm text-gray-500 dark:text-gray-500">
-                        {t("certificateInquiry.certificateNumber")}:{" "}
+                          {isMembershipInquery
+                            ? t("certificateInquiry.membershipCertificateNumber")
+                            : t("certificateInquiry.certificateNumber")}
+                          :{" "}
                         <strong
                           className="certificate-number"
                           style={{

@@ -310,7 +310,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             <div
               className={`overflow-hidden ${isCollapsed ? "lg:hidden" : ""}`}
             >
-              <SidebarLogoIcon className="h-10 w-auto" />
+              <SidebarLogoIcon className="invert h-10 w-auto" />
             </div>
             <button
               className="text-gray-400 hover:text-white lg:hidden"
