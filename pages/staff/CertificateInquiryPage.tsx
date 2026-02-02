@@ -128,7 +128,7 @@ const CertificateInquiryPage: React.FC = () => {
     if (isMembershipInquery) {
       // http://51.20.121.17/#/public/certificate/membership/131
       window.open(
-        `${fixedUrl}#/public/certificate/membership/${result.certificateData.id}`,
+        `${fixedUrl}/public/certificate/membership/${result.certificateData.id}`,
         "_blank"
       );
     } else {
@@ -137,27 +137,27 @@ const CertificateInquiryPage: React.FC = () => {
         // COMESA Certificate
 
         window.open(
-          `${fixedUrl}#/public/certificate/comisa/${result.certificateData.qr_identifier}`,
+          `${fixedUrl}/public/certificate/comisa/${result.certificateData.qr_identifier}`,
           "_blank"
         );
       } else if (requestTypeId === 2) {
         // Free Trade Certificate
         window.open(
-          `${fixedUrl}#/public/certificate/free-trade/${result.certificateData.qr_identifier}`,
+          `${fixedUrl}/public/certificate/free-trade/${result.certificateData.qr_identifier}`,
           "_blank"
         );
       }
       else if (requestTypeId === 6) {
         // Free Trade Certificate
         window.open(
-          `${fixedUrl}#/public/certificate/origin/${result.certificateData.id}`,
+          `${fixedUrl}/public/certificate/origin/${result.certificateData.id}`,
           "_blank"
         );
       }
       else if (requestTypeId === 7) {
         // Free Trade Certificate
         window.open(
-          `${fixedUrl}#/public/certificate/free-trade-copy/${result.certificateData.qr_identifier}`,
+          `${fixedUrl}/public/certificate/free-trade-copy/${result.certificateData.qr_identifier}`,
           "_blank"
         );
       }
