@@ -57,7 +57,7 @@ const BranchInquiriesPage: React.FC = () => {
     const fixedUrl = `${(import.meta as any).env.VITE_API_CHAMBERS}`;
     if(result){
       window.open(
-        `${fixedUrl}#/public/certificate/comisa/${result.qr_identifier}`,
+        `${fixedUrl}/public/certificate/comisa/${result.qr_identifier}`,
         "_blank"
       );
     }else{
