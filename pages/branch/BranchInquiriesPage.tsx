@@ -1,4 +1,4 @@
-import React, { useState,useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { UserRole } from "../../types";
@@ -45,22 +45,24 @@ const BranchInquiriesPage: React.FC = () => {
     // Search by employee name or ID
     const searchMatch =
       searchTerm === "" ||
-      inquiry.employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      inquiry.employeeId.toLowerCase().includes(searchTerm.toLowerCase());
+      inquiry?.username?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
+      inquiry?.serial_number?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
+      Number(inquiry?.user_id) === Number(searchTerm);
 
+    console.log(branchMatch, "DDDD")
     return branchMatch && searchMatch;
   });
 
-  
-  const moveToCertificateLink = useCallback(async(sn: string) => {
+
+  const moveToCertificateLink = useCallback(async (sn: string) => {
     const result = await searchCertificateBySerial(sn)
     const fixedUrl = `${(import.meta as any).env.VITE_API_CHAMBERS}`;
-    if(result){
+    if (result) {
       window.open(
         `${fixedUrl}public/certificate/comisa/${result.qr_identifier}`,
         "_blank"
       );
-    }else{
+    } else {
       toast.error('problem in this certificate: FE')
     }
   }, [searchCertificateBySerial])
@@ -71,7 +73,7 @@ const BranchInquiriesPage: React.FC = () => {
     }
     return (
       <div className="text-sm">
-        <Button variant="outlined" size="sm" icon={<LinkIcon className='size-4'/>} onClick={() => moveToCertificateLink(sn)}>
+        <Button variant="outlined" size="sm" icon={<LinkIcon className='size-4' />} onClick={() => moveToCertificateLink(sn)}>
           {t("inquiries.viewCertificate")}
         </Button>
         {/* <a
