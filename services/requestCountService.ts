@@ -1,3 +1,4 @@
+import { getCurrentLanguage } from '@/contexts/LanguageContext';
 import { getToken } from '../utils/getToken';
 
 export interface RequestCountData {
@@ -25,7 +26,7 @@ export const getRequestCount = async (): Promise<RequestCountResponse> => {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'Accept-Language': 'ar-EG,ar;q=0.9,en-US;q=0.8,en;q=0.7',
+        'Accept-Language': getCurrentLanguage(),
         'Authorization': `Bearer ${token}`,
         'Connection': 'keep-alive',
         'Content-Type': 'application/json',

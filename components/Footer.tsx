@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { version } from '../package.json';
 
 const Footer: React.FC = () => {
   const { t } = useLanguage();
@@ -7,7 +8,7 @@ const Footer: React.FC = () => {
     <footer className="bg-gray-200 dark:bg-gray-800 p-2 print:hidden border-t border-gray-300 dark:border-gray-700 shrink-0">
       <div className="container mx-auto text-center">
         <p className="text-xs text-gray-600 dark:text-gray-400">
-          {t('footer.copyright')}
+          {t('footer.copyright')} - {version}
         </p>
       </div>
     </footer>

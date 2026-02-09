@@ -1,3 +1,5 @@
+import { getCurrentLanguage } from "@/contexts/LanguageContext";
+
 const DEFAULT_BASE_URL = 'http://localhost:8080/api/v1/request-types';
 const BASE_URL: string = (import.meta as any)?.env?.VITE_API_BASE_URL
   ? `${(import.meta as any).env.VITE_API_BASE_URL.replace(/\/$/, '')}/api/v1/request-types`
@@ -36,6 +38,7 @@ export async function getRequestTypes(token?: string): Promise<ApiListResult> {
       method: 'GET',
       headers: {
         Accept: 'application/json',
+        'Accept-Language': getCurrentLanguage(),
         ...(auth ? { Authorization: `Bearer ${auth}` } : {}),
       },
     });

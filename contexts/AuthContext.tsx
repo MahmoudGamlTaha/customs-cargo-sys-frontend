@@ -32,12 +32,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    const fetchUser = async () => {
+    // debugger;
+    const fetchUser = () => {
       if (token) {
         setLoading(true);
         try {
-          const response = await getCurrentUser();
+          // debugger;
+          const response = getCurrentUser();
           if (response) {
+            // debugger;
             setUser(response);
             // The token in the response might be refreshed, but we'll trust the one we have
             // unless the auth service indicates otherwise. For now, we assume the token is valid.
@@ -56,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     fetchUser();
-  }, [token, setToken]);
+  }, [token]);
 
   useEffect(() => {
     const handleStorageChange = (event: StorageEvent) => {
