@@ -3,6 +3,7 @@ import { DocumentRequest, SingleRequestResponse, UserActivity } from "../types";
 import { DEFAULT_PAGINATION_PARAMS } from "../utils/generalPaginationForApplication";
 import { getToken } from "@/utils/getToken";
 import { IResponse } from "./authService";
+import { getCurrentLanguage } from "@/contexts/LanguageContext";
 
 const DEFAULT_BASE_URL = `http://localhost:8080/api/v1/requests`;
 const BASE_URL: string = (import.meta as any)?.env?.VITE_API_BASE_URL
@@ -535,6 +536,7 @@ export async function getRequestActivities(
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
         'Accept': 'application/json',
+        'Accept-Language': getCurrentLanguage(),
       },
     });
 
@@ -580,6 +582,7 @@ export async function GetRequestsCount(): Promise<IResponse> {
     method: 'GET',
     headers: {
       Accept: 'application/json',
+      'Accept-Language': getCurrentLanguage(),
       ...(auth ? { Authorization: `Bearer ${auth}` } : {}),
     },
   });
@@ -604,6 +607,7 @@ export async function GetMembershipByIdPublic(id: string): Promise<IResponse> {
       method: "GET",
       headers: {
         Accept: "application/json",
+        'Accept-Language': getCurrentLanguage(),
       },
       // body: JSON.stringify(req),
     });

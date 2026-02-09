@@ -1,5 +1,6 @@
 import { getToken } from '@/utils/getToken';
 import { User, UserRole, Branch } from '../types';
+import { getCurrentLanguage } from '@/contexts/LanguageContext';
 
 const DEFAULT_BASE_URL = 'http://localhost:8080/api/v1/auth';
 const BASE_URL: string = (import.meta as any)?.env?.VITE_API_BASE_URL
@@ -102,7 +103,10 @@ const mapApiUserToUser = (apiUser: any): User => {
 export async function login(email: string, password: string): Promise<LoginResult> {
   const resp = await fetch(`${BASE_URL}/login`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept-Language': getCurrentLanguage()
+    },
     body: JSON.stringify({ email, password }),
   });
 
@@ -241,7 +245,10 @@ export async function register(
   try {
     const resp = await fetch(`${BASE_URL}/register`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept-Language': getCurrentLanguage()
+      },
       body: JSON.stringify({ fullName, email, phone, branchId, password }),
     });
 

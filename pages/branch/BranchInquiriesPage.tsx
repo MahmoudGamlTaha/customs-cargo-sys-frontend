@@ -43,11 +43,12 @@ const BranchInquiriesPage: React.FC = () => {
     const branchMatch = filterBranch === "all" || inquiry.entity_name === filterBranch
 
     // Search by employee name or ID
+    // console.log(inquiry, "Inquiry")
     const searchMatch =
       searchTerm === "" ||
-      inquiry?.username?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
-      inquiry?.serial_number?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
-      Number(inquiry?.user_id) === Number(searchTerm);
+      inquiry?.entity_name?.toLowerCase()?.includes(searchTerm?.toLowerCase() || "") ||
+      Number(inquiry?.user_id) === Number(searchTerm) ||
+      inquiry?.username?.toLowerCase()?.includes(searchTerm?.toLowerCase() || "");
 
     console.log(branchMatch, "DDDD")
     return branchMatch && searchMatch;
