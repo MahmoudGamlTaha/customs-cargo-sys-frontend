@@ -1,5 +1,6 @@
 import { getToken } from "@/utils/getToken";
 import { dataProcessor, BackendResponse, BranchesResponse, PortsResponse } from "@/utils/DataProcessor";
+import { getCurrentLanguage } from "@/contexts/LanguageContext";
 
 const DEFAULT_BASE_URL = 'http://localhost:8080/api/v1/branches';
 const ADMIN_PREFIX = '/admin';
@@ -51,6 +52,7 @@ export async function getBranches(token?: string): Promise<ApiListResult> {
     method: 'GET',
     headers: {
       Accept: 'application/json',
+      'Accept-Language': getCurrentLanguage(),
       ...(auth ? { Authorization: `Bearer ${auth}` } : {}),
     },
   });
@@ -78,6 +80,7 @@ export async function createBranch(branchData: Omit<Branch, 'id'>, token?: strin
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
+      'Accept-Language': getCurrentLanguage(),
       ...(auth ? { Authorization: `Bearer ${auth}` } : {}),
     },
     body: JSON.stringify(branchData),
@@ -105,6 +108,7 @@ export async function updateBranch(id: string | number, branchData: Partial<Omit
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
+      'Accept-Language': getCurrentLanguage(),
       ...(auth ? { Authorization: `Bearer ${auth}` } : {}),
     },
     body: JSON.stringify(branchData),
@@ -131,6 +135,7 @@ export async function deleteBranch(id: string | number, token?: string): Promise
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
+      'Accept-Language': getCurrentLanguage(),
       ...(auth ? { Authorization: `Bearer ${auth}` } : {}),
     },
   });

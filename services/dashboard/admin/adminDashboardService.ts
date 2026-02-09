@@ -1,3 +1,4 @@
+import { getCurrentLanguage } from "@/contexts/LanguageContext";
 import { getToken } from "@/utils/getToken";
 
 // Types for API responses
@@ -50,6 +51,7 @@ export const getRatioSum = async (): Promise<RatioSumResponse> => {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
+        'Accept-Language': getCurrentLanguage(),
       },
     });
 

@@ -332,8 +332,10 @@ const AdminUserManagementPage: React.FC<AdminUserManagementPageProps> = ({
         name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesRole = roleFilter === "all" || user.role === roleFilter;
+      // console.log(user, "SSSSSSSUUU")
       const matchesStatus =
-        statusFilter === "all" || user.status === statusFilter;
+        statusFilter === "all" || (statusFilter === "Active" && user.is_active) || (statusFilter === "Suspended" && !user.is_active);
+      // const matchesBranch = branchFilter === "all" || String(user.branchId) === String(branchFilter);
       return matchesSearch && matchesRole && matchesStatus;
     });
   }, [apiUsers, searchTerm, roleFilter, statusFilter, language]);

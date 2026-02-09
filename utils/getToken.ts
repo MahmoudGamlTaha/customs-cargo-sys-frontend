@@ -2,11 +2,36 @@
 
 import { GetUserPermission, IPermissions } from "@/services/userService";
 
+function decodeJwt(token: string) {
+  try {
+    const payload = token.split(".")[1];
+    const decoded = atob(payload.replace(/-/g, "+").replace(/_/g, "/"));
+    return JSON.parse(decoded);
+  } catch {
+    return null;
+  }
+}
+
+function isTokenExpired(token: string): boolean {
+  const decoded = decodeJwt(token);
+
+  if (!decoded?.exp) return true;
+
+  const currentTime = Math.floor(Date.now() / 1000); // seconds
+  return decoded.exp < currentTime;
+}
+
+
 export function getToken(): string | null {
   try {
-    return localStorage.getItem("auth_token");
+
+    const token = localStorage.getItem("auth_token");
+    if (!token || isTokenExpired(token)) {
+      // window.location.href = "/";
+    } else {
+      return token;
+    }  
   } catch (error) {
-    console.error("Error accessing localStorage:", error);
     return null;
   }
 }

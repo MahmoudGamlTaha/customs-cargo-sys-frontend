@@ -1,4 +1,5 @@
 // Certificate Service - Handles certificate operations
+import { getCurrentLanguage } from '@/contexts/LanguageContext';
 import { getCurrentUser } from '../authService';
 
 // Base URL configuration
@@ -90,7 +91,8 @@ export async function getCertificateById(certificateId: number): Promise<Certifi
       headers: {
         'Authorization': `Bearer ${user.accessToken}`,
         'Content-Type': 'application/json',
-        'User-Agent': 'insomnia/11.4.0'
+        'User-Agent': 'insomnia/11.4.0',
+        'Accept-Language': getCurrentLanguage(),
       }
     });
 
