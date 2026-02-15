@@ -603,11 +603,13 @@ export async function GetRequestsCount(): Promise<IResponse> {
 export async function GetMembershipByIdPublic(id: string): Promise<IResponse> {
   if (id) {
     const url = `${BASE_URL_SOURCE}/membership/check/${id}`;
+    const auth = getToken() || getAuthToken();
     const resp = await fetch(url, {
       method: "GET",
       headers: {
         Accept: "application/json",
         'Accept-Language': getCurrentLanguage(),
+        ...(auth ? { Authorization: `Bearer ${auth}` } : {}),
       },
       // body: JSON.stringify(req),
     });
